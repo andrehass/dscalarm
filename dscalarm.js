@@ -29,7 +29,7 @@
  https://github.com/kholloway/smartthings-dsc-alarm
  https://github.com/kholloway/smartthings-dsc-alarm/blob/master/RESTAPISetup.md
  https://github.com/yracine/DSC-Integration-with-Arduino-Mega-Shield-RS-232
- 
+
 */
 
 ////////////////////////////////////////
@@ -133,6 +133,11 @@ app.get("/api/alarmPanic", function (req, res) {
     res.end();
 });
 
+app.get("/api/setdate", function (req, res) {
+    setDate();
+    res.end();
+});
+
 
 // Receiving AppID and AccessToken
 // I'll use it in V2
@@ -166,7 +171,7 @@ server.listen(httpport);
 // Creating Serial (RS232) Connection
 ////////////////////////////////////////
 
-// Instanciating the object myPort 
+// Instanciating the object myPort
 // Using a baudRate (port speed)
 // Setting a parser. Based on IT-100 Board communication pattern everytime
 //  a command is sent the board will send a \r\n at the end.
@@ -290,6 +295,40 @@ function alarmUpdate() {
     sendToSerial(cmd);
 }
 
+//alarm Hour and Data Sync
+function setDate() {
+    var date = new Date();
+
+    var minute = date.getMinutes().toString();
+        if (minute.lenght == 1){
+           minute = "0"+minute;
+            };
+
+    var hour = date.getHours().toString();
+        if (hour.lenght == 1){
+        hour = "0"+hour;
+        };
+
+    var month = date.getMonth() + 1;
+        month = month.toString();
+        if(month.lenght == 1){
+          month = "0"+month;
+        };
+
+    var day = date.getDate();
+        if (day == 1){
+            day = "0"+day;
+        }
+
+    var year = date.getFullYear();
+
+    var cmd = minute + hour.toString() + month + day + year.toString().substring(2,4);
+    cmd = "001"+cmd;
+    cmd = appendChecksum(cmd);
+    sendToSerial(cmd);
+
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////
 // *** Not in use - function to set the alarm boud rate - *** Not in use
 // In cas you want to change the Alarm Board Serial Speed
@@ -314,10 +353,10 @@ function alarmSetBaudRate(speed) {
     else if (speed == "115200") {
         cmd = cmd + "4";
     }
-    else  // By default set to 9600 
+    else  // By default set to 9600
     {
         cmd = cmd + "0";
-    }  
+    }
     cmd = appendChecksum(cmd);
     sendToSerial(cmd);
 }
@@ -335,7 +374,7 @@ function saveAppIDAccessToken(data) {
 // Method used to append the right checksum at the end of any command sent to DSC IT-100 Board
 // According with DSC IT-100 manual each command sent to the board must have a checksum
 // This method will calculate the checksum according to the command that need to be sent
-// Will return the data ready to be sent to DSC IT-100 Board 
+// Will return the data ready to be sent to DSC IT-100 Board
 // Alarm Documentation - http://cms.dsc.com/download.php?t=1&id=16238
 ////////////////////////////////////////////////////////////////////////////////////////////////
 function appendChecksum(data) {
