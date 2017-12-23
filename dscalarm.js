@@ -133,8 +133,8 @@ app.get("/api/alarmPanic", function (req, res) {
     res.end();
 });
 
-app.get("/api/setdate", function (req, res) {
-    setDate();
+app.get("/api/setAlarmDatevi ", function (req, res) {
+    setAlarmDate();
     res.end();
 });
 
@@ -296,7 +296,7 @@ function alarmUpdate() {
 }
 
 //alarm Hour and Data Sync
-function setDate() {
+function setAlarmDate() {
     var date = new Date();
     var minute = date.getMinutes().toString();
         if (minute.lenght == 1){
