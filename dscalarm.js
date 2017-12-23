@@ -298,7 +298,6 @@ function alarmUpdate() {
 //alarm Hour and Data Sync
 function setDate() {
     var date = new Date();
-
     var minute = date.getMinutes().toString();
         if (minute.lenght == 1){
            minute = "0"+minute;
@@ -308,24 +307,20 @@ function setDate() {
         if (hour.lenght == 1){
         hour = "0"+hour;
         };
-
     var month = date.getMonth() + 1;
         month = month.toString();
         if(month.lenght == 1){
           month = "0"+month;
         };
-
     var day = date.getDate();
         if (day == 1){
             day = "0"+day;
-        }
-
-    var year = date.getFullYear();
-
-    var cmd = minute + hour.toString() + month + day + year.toString().substring(2,4);
-    cmd = "001"+cmd;
+        };
+    var year = date.getFullYear().toString().substring(2,4);
+    var cmd = minute + hour + month + day + year
+    cmd = "010"+cmd;
     cmd = appendChecksum(cmd);
-    sendToSerial(cmd);
+        sendToSerial(cmd);
 
 }
 
