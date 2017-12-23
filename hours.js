@@ -25,4 +25,5 @@ function setAlarmDate() {
     cmd = "010"+cmd;
 
  console.log(cmd);
+ console.log(minute);
 }
