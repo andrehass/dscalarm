@@ -21,7 +21,7 @@ function setAlarmDate() {
             day = "0"+day;
         };
     var year = date.getFullYear().toString().substring(2,4);
-    var cmd = minute + hour + month + day + year
+    var cmd = hour + minute + month + day + year
     cmd = "010"+cmd;
 
  console.log(cmd);
