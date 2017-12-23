@@ -133,7 +133,7 @@ app.get("/api/alarmPanic", function (req, res) {
     res.end();
 });
 
-app.get("/api/setAlarmDatevi ", function (req, res) {
+app.get("/api/setAlarmDate", function (req, res) {
     setAlarmDate();
     res.end();
 });
